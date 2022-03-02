@@ -183,6 +183,10 @@ export class VAxios {
     return this.request({ ...config, method: 'POST' }, options);
   }
 
+  postForm<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
+    return this.request({ ...config, method: 'POST', headers:{'Content-Type': ContentTypeEnum.FORM_URLENCODED}}, options);
+  }
+
   put<T = any>(config: AxiosRequestConfig, options?: RequestOptions): Promise<T> {
     return this.request({ ...config, method: 'PUT' }, options);
   }

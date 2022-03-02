@@ -189,7 +189,8 @@ export const usePermissionStore = defineStore({
           } catch (error) {
             console.error(error);
           }
-
+          // role 过滤
+          routeList = filter(routeList, routeFilter);
           // Dynamically introduce components
           routeList = transformObjToRoute(routeList);
 
