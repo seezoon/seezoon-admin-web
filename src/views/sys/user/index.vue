@@ -20,7 +20,7 @@
         </a-col>
         <a-col :span="4">
           <a-space>
-            <a-button type="primary" @click="this.pagination.current = 1 && query()">查询</a-button>
+            <a-button type="primary" @click="query()">查询</a-button>
             <a-button @click="this.$refs.searchForm.resetFields()">重置</a-button>
             <a-button type="primary">添加</a-button>
           </a-space>
@@ -99,7 +99,7 @@ export default {
     }
   },
   methods: {
-    query(pagination = this.pagination, filters, sorter) {
+    query(pagination = {...this.pagination,current:1}, filters, sorter) {
       // debugger
       this.loading = true;
       defHttp.post({
