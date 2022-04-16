@@ -55,9 +55,8 @@ const transform: AxiosTransform = {
     if (hasSuccess) {
       return result;
     }
-
     // 系统错误 默认提示
-    if (code.startsWith('80') || code.startsWith('90') || code === '-1') {
+    if (code !== '0') {
       // errorMessageMode=‘modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
       // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
       if (options.errorMessageMode === 'modal') {

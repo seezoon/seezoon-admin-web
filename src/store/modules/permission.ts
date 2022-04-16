@@ -23,6 +23,7 @@ import { getPermCode } from '/@/api/sys/user';
 
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
+import {useDictStore} from "/@/store/modules/dict";
 
 interface PermissionState {
   // Permission code list
@@ -97,19 +98,24 @@ export const usePermissionStore = defineStore({
       this.setPermCodeList(codeList);
     },
     async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {
+      // df 都从后台取权限
+      this.changePermissionCode();
       const { t } = useI18n();
       const userStore = useUserStore();
       const appStore = useAppStoreWithOut();
-
+      const dictStore = useDictStore();
+      await dictStore.init();
       let routes: AppRouteRecordRaw[] = [];
       const roleList = toRaw(userStore.getRoleList) || [];
+      const perCodes= toRaw(this.permCodeList) || [];
       const { permissionMode = projectSetting.permissionMode } = appStore.getProjectConfig;
 
       const routeFilter = (route: AppRouteRecordRaw) => {
         const { meta } = route;
         const { roles } = meta || {};
         if (!roles) return true;
-        return roleList.some((role) => roles.includes(role));
+        // 从角色中匹配到，或者权限匹配到都可以
+        return roleList.some((role) => roles.includes(role)) || perCodes.some((code)=>roles.includes(code));
       };
 
       const routeRemoveIgnoreFilter = (route: AppRouteRecordRaw) => {
@@ -147,7 +153,6 @@ export const usePermissionStore = defineStore({
         }
         return;
       };
-
       switch (permissionMode) {
         case PermissionModeEnum.ROLE:
           routes = filter(asyncRoutes, routeFilter);
@@ -189,7 +194,7 @@ export const usePermissionStore = defineStore({
           } catch (error) {
             console.error(error);
           }
-          // role 过滤
+          // df add role 过滤
           routeList = filter(routeList, routeFilter);
           // Dynamically introduce components
           routeList = transformObjToRoute(routeList);

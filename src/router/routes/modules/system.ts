@@ -1,9 +1,8 @@
 import type {AppRouteModule} from '/@/router/types';
 
 import {LAYOUT} from '/@/router/constant';
-import {t} from '/@/hooks/web/useI18n';
 
-const dashboard: AppRouteModule = {
+const sys: AppRouteModule = {
   path: '/sys',
   name: 'Sys',
   component: LAYOUT,
@@ -11,7 +10,7 @@ const dashboard: AppRouteModule = {
   meta: {
     orderNo: 10,
     icon: 'ant-design:setting-twotone',
-    title: t('系统设置'),
+    title: '系统设置',
   },
   children: [
     {
@@ -19,11 +18,11 @@ const dashboard: AppRouteModule = {
       name: 'SysUser',
       component: () => import('/@/views/sys/user/index.vue'),
       meta: {
-        // affix: true,
-        title: t('用户管理'),
+        icon:'ant-design:user-outlined',
+        title: '用户管理',
       },
     },
   ],
 };
 
-export default dashboard;
+export default sys;

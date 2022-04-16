@@ -4,7 +4,7 @@
 export interface LoginParams {
   username: string;
   password: string;
-  rememberMe: boolean
+  rememberMe?: boolean
 }
 
 export interface RoleInfo {

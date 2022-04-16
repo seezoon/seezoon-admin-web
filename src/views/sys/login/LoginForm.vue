@@ -134,11 +134,12 @@
     if (!data) return;
     try {
       loading.value = true;
-      const userInfo = await userStore.login({
+      await userStore.login({
         password: data.password,
         username: data.account,
         rememberMe: unref(rememberMe),
       });
+
      /*
      if (userInfo) {
         notification.success({
